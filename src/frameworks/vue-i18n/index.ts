@@ -30,9 +30,10 @@ const VueFrameworkDefinition: FrameworkDefinition = {
 
   refactorTemplates: (keypath, languageId) => [
     `{{$t('${keypath}')}}`,
-    `this.$t('${keypath}')`,
+    `this.$tc('${keypath}')`,
+    `$t('${keypath}')`,
     `$t("${keypath}")`,
-    `i18n.t('${keypath}')`,
+    `this.$t('${keypath}')`,
     keypath,
   ],
 }
