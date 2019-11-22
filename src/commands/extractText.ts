@@ -9,11 +9,38 @@ import i18n from '../i18n'
 const m: ExtensionModule = () => {
   return commands.registerCommand(Commands.extract_text,
     async (options: ExtractTextOptions) => {
-      const { filepath, text, range, languageId } = options
-      const default_keypath = limax(text, { separator: Config.preferredDelimiter, tone: false }) as string
+      let { filepath, text, range, languageId } = options
+      let suggestText: string | undefined = ''; // 建议的替换文本
+      let default_keypath = '';
+      let attributeName = '';
+      let isHTMLAttribute: boolean = false; // 是否是html标签属性
+      let promptMsg: string = '🙃' + i18n.t('prompt.enter_i18n_key');
+      let testReg = new RegExp(/^.+\s*=\s*('|"){1}.+('|"){1}$/);
+      let equalIndex: number = -1;
+
+      if (testReg.test(text)) {
+        equalIndex = text.indexOf('=');
+        isHTMLAttribute = true;
+        attributeName = text.substring(0, equalIndex);
+        text = text.substring(equalIndex + 1);
+
+        window.showInformationMessage(`😂匹配到html属性：${attributeName}，使用默认规则替换`)
+      }
+
+      // 根据值到翻译字典里取对应的key
+      suggestText = Global.loader.getKeyByValue(text);
+      if (suggestText) {
+        default_keypath = suggestText;
+        promptMsg = `😂匹配到文本：${suggestText}，建议适用此代码`;
+      }
+      else {
+        // 如果没找到据适用默认的
+        default_keypath = limax(text, { separator: Config.preferredDelimiter, tone: false }) as string
+      }
+
       // prompt for keypath
       const keypath = await window.showInputBox({
-        prompt: i18n.t('prompt.enter_i18n_key'),
+        prompt: promptMsg,
         value: default_keypath,
       })
 
@@ -24,8 +51,8 @@ const m: ExtensionModule = () => {
 
       // keypath existence check
       const node = Global.loader.getNodeByKey(keypath)
-      let willSkip = false
-      if (node) {
+      let willSkip = suggestText ? true : false;
+      if (!willSkip && node) {
         const Override = i18n.t('prompt.button_override')
         const Skip = i18n.t('prompt.button_skip')
         const Reenter = i18n.t('prompt.button_reenter')
@@ -53,16 +80,24 @@ const m: ExtensionModule = () => {
 
       const value = trim(text, '\'"')
 
-      // prompt for template
-      const replacer = await window.showQuickPick(
-        Global.refactorTemplates(keypath, languageId),
-        {
-          placeHolder: i18n.t('prompt.replace_text_as'),
-        })
+      let replacer: string | undefined = '';
 
-      if (!replacer) {
-        window.showWarningMessage(i18n.t('prompt.extraction_canceled'))
-        return
+      // 如果是html的话，使用默认规则
+      if (isHTMLAttribute) {
+        replacer = `:${attributeName}="$t('${keypath}')"`;
+      }
+      else {
+        // prompt for template
+        replacer = await window.showQuickPick(
+          Global.refactorTemplates(keypath, languageId),
+          {
+            placeHolder: i18n.t('prompt.replace_text_as'),
+          })
+
+        if (!replacer) {
+          window.showWarningMessage(i18n.t('prompt.extraction_canceled'))
+          return
+        }
       }
 
       // open editor if not exists
@@ -72,7 +107,9 @@ const m: ExtensionModule = () => {
         editor = await window.showTextDocument(document)
       }
       editor.edit((editBuilder) => {
-        editBuilder.replace(range, replacer)
+        if (replacer) {
+          editBuilder.replace(range, replacer.toString());
+        }
       })
 
       if (willSkip)

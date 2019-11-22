@@ -200,19 +200,18 @@ export abstract class Loader extends Disposable {
    * @param locale 
    */
   getKeyByValue(value: string, locale?: string) {
-    // const tree: LocaleTree = this.root;
-    // const child=tree.children;
-
-    // // tree style
-    // const keys = this.splitKeypath(keypath)
-    // const head = keys[0]
-    // const remaining = keys.slice(1).join('.')
-    // const node = tree.getChild(head)
-    // if (remaining === '')
-    //   return node
-    // if (node && node.type === 'tree')
-    //   return this.getTreeNodeByKey(remaining, node)
-    // return undefined
+    // 去除首位的引号（单/双引号）
+    if ((value.startsWith('\'') && value.endsWith('\'')) ||
+      (value.startsWith('"') && value.endsWith('"'))
+    ) {
+      value = value.substring(1, value.length - 1);
+    }
+    const keys = Object.keys(this.flattenLocaleTree);
+    const key = keys.find((key: any) => {
+      let node: any = this.flattenLocaleTree[key];
+      return node.type == 'node' && node.value == value;
+    });
+    return key;
   }
 
   getShadowNodeByKey(keypath: string) {

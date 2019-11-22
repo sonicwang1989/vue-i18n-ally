@@ -284,12 +284,12 @@
         },
         "vue-i18n-ally.sourceLanguage": {
           "type": "string",
-          "default": "en",
+          "default": "zh-CN",
           "description": "%config.source_language%"
         },
         "vue-i18n-ally.displayLanguage": {
           "type": "string",
-          "default": "en",
+          "default": "zh-CN",
           "description": "%config.display_language%"
         },
         "vue-i18n-ally.ignoredLocales": {
