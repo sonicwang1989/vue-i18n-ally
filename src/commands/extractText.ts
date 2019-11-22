@@ -11,7 +11,6 @@ const m: ExtensionModule = () => {
     async (options: ExtractTextOptions) => {
       const { filepath, text, range, languageId } = options
       const default_keypath = limax(text, { separator: Config.preferredDelimiter, tone: false }) as string
-
       // prompt for keypath
       const keypath = await window.showInputBox({
         prompt: i18n.t('prompt.enter_i18n_key'),

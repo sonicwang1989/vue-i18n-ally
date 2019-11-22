@@ -4,8 +4,8 @@
 <h1 align="center">Vue i18n Ally</h1>
 
 <p align="center">
-🌍 Better <a href="https://github.com/kazupon/vue-i18n">Vue i18n</a> experiences with VSCode -
-<a href="https://github.com/antfu/vue-i18n-ally/blob/master/README.zh-cn.md"><strong>中文文档</strong></a>
+🌍 更好的 <a href="https://github.com/kazupon/vue-i18n">Vue i18n</a> 翻译体验 -
+<a href="https://github.com/antfu/vue-i18n-ally/blob/master/README.md"><strong>English Version</strong></a>
 </p>
 
 <p align="center">
@@ -16,107 +16,62 @@
 <a href="https://github.com/antfu/vue-i18n-ally/issues"><img src="https://img.shields.io/github/issues/antfu/vue-i18n-ally.svg" alt="GitHub issues" /></a>
 </p>
 
-<p align='center'>
-Now with <a href="https://github.com/antfu/vue-i18n-ally#-experimental-sfc-support">Single File Component</a> support! 🎉
-</p>
+## ⚡ 主要功能
 
-<h2 align="center"> ⚡ Features </h2>
+- 内联翻译显示
+- 自动补全
+- 一键机器翻译
+- 统一管理所有翻译文案
+- 翻译进度报告
+- 从代码中提取文案
+- 转跳到翻译文件
+- 支持`JSON`和`YAML`
+- 支持多目录工作区
+- 支持 [`vue-i18n`](https://github.com/kazupon/vue-i18n), [`vuex-i18n`](https://github.com/dkfbasel/vuex-i18n), [`vue-i18next`](https://github.com/panter/vue-i18next) 和 [`nuxt-i18n`](https://github.com/nuxt-community/nuxt-i18n)
+- 插件自身多语言支持 **(English, 简体中文, 繁體中文)**
 
-<h3 align="center"> Inline annotation </h3>
-
-<p align="center">
-<img src='https://github.com/antfu/vue-i18n-ally/blob/master/screenshots/annotation.png?raw=true' width='700px'/>
-</p>
-
-<h3 align="center"> Hover & Direct actions </h3>
-
-<p align="center">
-<img src='https://github.com/antfu/vue-i18n-ally/blob/master/screenshots/hover.png?raw=true' width='600px'/>
-</p>
+![](https://raw.githubusercontent.com/antfu/vue-i18n-ally/master/screenshots/overview-zh-cn.png)
 
 
-<h3 align="center"> Manage all translations in one place </h3>
-
-<p align="center">
-<img src='https://github.com/antfu/vue-i18n-ally/blob/master/screenshots/progress_report.png?raw=true' width='600px'/>
-</p>
-
-<p align="center">
-<img src='https://github.com/antfu/vue-i18n-ally/blob/master/screenshots/manage.png?raw=true' width='600px'/>
-</p>
-
-<p align="center">
-<img src='https://github.com/antfu/vue-i18n-ally/blob/master/screenshots/missing_keys.png?raw=true' width='600px'/>
-</p>
+> 🚧 注意: 中文文档可能不会及时对应到最新版本的功能，请以英文版本为主。
 
 
-<h3 align="center"> Translations missing report </h3>
+## ⚙ 安装
 
-<p align="center">
-<img src='https://github.com/antfu/vue-i18n-ally/blob/master/screenshots/problems.png?raw=true' width='500px'/>
-</p>
+从 VSCode插件市场 [安装插件](https://marketplace.visualstudio.com/items?itemName=antfu.vue-i18n-ally) 即可!
 
 
-<h3 align="center"> Multiple formats supported </h3>
+## 🎯 常见问题
 
-<p align="center">
-<img src='https://github.com/antfu/vue-i18n-ally/blob/master/screenshots/yaml_support.png?raw=true' width='500px'/>
-</p>
+### 插件没有作用
 
+本插件只会在装有 `vue-i18n` 的项目中启用。请确保在 `package.json` 的 `dependencies` 或 `devDependencies` 中装有下列任一依赖。
+  - [`vue-i18n`](https://github.com/kazupon/vue-i18n)
+  - [`vuex-i18n`](https://github.com/dkfbasel/vuex-i18n)
+  - [`vue-i18next`](https://github.com/panter/vue-i18next)
+  - [`nuxt-i18n`](https://github.com/nuxt-community/nuxt-i18n)
 
-<h3 align="center"> Refactors & Auto translate </h3>
+### 我可以看到插件的图标显示在侧边栏，但没有任何的翻译文案
 
-<p align="center">
-<img src='https://github.com/antfu/vue-i18n-ally/blob/master/screenshots/refactor_translate.png?raw=true' width='500px'/>
-</p>
+可能的问题：
 
-
-<h3 align="center"> Extract translations from code </h3>
-
-<p align="center">
-<img src='https://github.com/antfu/vue-i18n-ally/blob/master/screenshots/extract.png?raw=true' width='500px'/>
-</p>
-
-<h3 align="center"> Annonation for JSON and YAML </h3>
-
-<p align="center">
-<img src='https://github.com/antfu/vue-i18n-ally/blob/master/screenshots/locale-annotation.png?raw=true' width='600px'/>
-</p>
+1. **区域设置路径配置缺失**，您可能需要通过下列任一方式手动配置翻译文件路径
+     - 打开**命令面板**（`Ctrl-Shift-P`或`⌘⇧P`），选择 `Vue i18n 助手: 手动设置语言目录` 并按照指南操作。
+     - 打开 VSCode 的设置文件并手动设置 `vue-i18n-ally.localesPaths`。
+2. **源语言/显示语言设置**。 默认语言环境设置为英语（`en`）。 如果您的项目不支持英语，则可能需要通过命令 `Vue i18n 助手: 更改源语言` 进行修改。
+3. **目录结构** 请阅读下一节
 
 
-<h3 align="center"> Overview </h3>
+## 📂 目录结构
 
-- Multi-root workspace supported
-- Remote development supported
-- Supports both [`vue-i18n`](https://github.com/kazupon/vue-i18n), [`vuex-i18n`](https://github.com/dkfbasel/vuex-i18n), [`vue-i18next`](https://github.com/panter/vue-i18next) and [`nuxt-i18n`](https://github.com/nuxt-community/nuxt-i18n)
-- i18n for the extension itself, of course. **(supporting: English, 简体中文, 繁體中文 or [help us translate](https://github.com/antfu/vue-i18n-ally#-help-translate-this-extension))**
-
-<p align="center">
-<img src='https://github.com/antfu/vue-i18n-ally/blob/master/screenshots/overview.png?raw=true' width='700px'/>
-</p>
-
-## 📜 Supported Formats
-
-| Format | Read | Write | Annonations | Note |
-| --- | --- | --- | --- | --- |
-| JSON | ✅ | ✅ | ✅ | |
-| YAML | ✅ | ✅ | ✅ | *Comments will NOT preserved\** |
-| JSON5 | ✅ | ✅ | ❌ | *Comments will NOT preserved\** |
-| JavaScript | ✅ | ❌ | ❌ | *Forced in readonly mode* |
-| TypeScript | ✅ | ❌ | ❌ | *Forced in readonly mode* |
-
-*\* Due to the limitation of `yaml.dumps`([#196](https://github.com/nodeca/js-yaml/issues/196)) and `JSON5.stringify`([#177](https://github.com/json5/json5/issues/177)), **comments in YAML and JSON5 will be OMITTED** on any modification by this extension (editing, translating, etc). If you are using comments in your locale files, you can turn on readonly mode by `vue-i18n-ally.readonly` to prevent lossing comments.*
-
-## 📂 Directory structure
-
-You can have locales directory structured like this with zero-configuration
+您可以将语言目录置为一下两种形式
 
 ```
-  locales         # i18n, langs, locale are also acceptable
+  locales
   ├── en.json
   ├── de-DE.json
-  ├── zh-CN.yml   # YAML
-  ├── zh-TW.ts    # You can mix different formats
+  ├── zh-CN.yaml  # YAML 格式同样支持
+  ├── zh-TW.yaml
   ├── ...
   └── <contry-code>.json
 ```
@@ -140,130 +95,11 @@ or
       └── ...
 ```
 
+目前我们支持 `json`/`yaml`/`js`/`ts` 翻译文件格式。
 
-## ⚙ Common Configurations
+## 👨‍💻 感谢
 
-All fields should add prefix "`vue-i18n-ally.`" in the setting.
-
-| Field | Default | Description |
-| --- | --- | --- |
-| `sourceLanguage` | `en` | The primary locale for the project. It will also be the source language on translating. |
-| `displayLanguage` | `en` | Displaying language in annotations and tree views. |
-| `localesPaths` | Auto detect | Locales directory path, relative to root of the project. Can also be an array of paths. Glob patterns are acceptable. |
-| `sortedKeys` | `false` | Sorting keys alphabetically on saving |
-| `readonly` | `false` | Work on readonly mode. Translating and editing will be disabled. |
-| `annotations` | `true` | Enabling inline annotations |
-
-
-## 🔩 Advanced Configurations
-
-| Field | Default | Description |
-| --- | --- | --- |
-| `filenameMatchRegex` | null | Accept a regex allows you to map the filenames. The first group in regex should be the locale code. |
-| `forceEnabled` | `false` | Extension will on enabled when `vue-i18n`-ish dependencies is installed in the project. Turning on this option will force the extension enabled anyway. |
-| `experimental.sfc` | `false` | Support for loading [Single File Components](http://kazupon.github.io/vue-i18n/guide/sfc.html) `<i18n>` section. Currently SFC only works in **READONLY** mode, the other features will be landed in future release. |
-
-
-## 🌍 Help translate this extension
-
-This extension itself supports i18n as well, it will be auto matched to the display language you used in your vscode editor. If you would like to help translate this extension, you can do it by following steps.
-
-1. Fork this repo and clone it to you local machine
-2. Copy `package.nls.json` to `package.nls.<locale-code>.json` in the root of the repo
-3. Translate every single message in the new json file you created.
-4. Commit changes and make a PR to this repo
-
-We would recommend you to use vscode with `vue-i18n-ally` installed. It can helps you translate itself 😁, all the configs were already set in the workspace settings.
-
-
-## 🎯 Troubleshooting
-
-### Extension doesn't work/show up. There is no icon in activity bar
-
-Extension will only be enabled on `vue-i18n`"-ish" project. Make sure you have one of the following package in the `dependencies` or `devDependencies` fields of your `package.json`
-  - [`vue-i18n`](https://github.com/kazupon/vue-i18n)
-  - [`vuex-i18n`](https://github.com/dkfbasel/vuex-i18n)
-  - [`vue-i18next`](https://github.com/panter/vue-i18next)
-  - [`nuxt-i18n`](https://github.com/nuxt-community/nuxt-i18n)
-
-### I can see the icon in activity bar, but nothing show up
-
-1. **Locales path config missing**. `locales` path will be detected automatically at the first time you open a project. If the nothing show up, you may need to configure it manually. There are two ways to do that:
-   - Open **Command Palette** (`Ctrl-Shift-P` or `⌘⇧P`), type `Vue i18n Ally: Manual configure locales path` then press enter and follow the guide.
-   - Goto to the settings of VSCode and set `vue-i18n-ally.localesPaths` manually.
-2. **The source / displaying locale**. The default locale is set to English(`en`). If you don't have English in your supporting locales, you may need to config it through command `Vue i18n Ally: Change source language`
-3. Check your **Directory structure**
-
-
-### 🗂 Advanced folder directory configurations
-
-In some cases, you may use modules, monorepo or other philosophies to organize your locale files.
-
-**For example**, you have following directory structure need to be config.
-
-```
-  packages
-  ├── pkgA
-  |   └── i18n
-  |       ├── en.messages.json
-  |       ├── zh-CN.messages.json
-  |       └── ...
-  ├── pkgB
-  |   └── i18n
-  |       ├── en.messages.json
-  |       ├── zh-CN.messages.json
-  |       └── ...
-  └── ...
-```
-
-You could change your config like this:
-
-```json
-{
-  "vue-i18n-ally.localesPaths": [
-    "packages/**/**/i18n"
-  ],
-  "vue-i18n-ally.filenameMatchRegex": "^([\\w-]*)\\.messages\\.json",
-}
-```
-
-
-## 📅 TODOs
-
-We have not determined schedule to implement the TODOs. If you would like to see them implemented, please open an issue and share your use cases. PR is also welcome.
-
-Todo:
-- [ ] Tests
-- [ ] Live share support
-- [ ] `esm` hot reloading, #97
-- [ ] Enhance SFC support
-
-Done:
-- [x] Machine translating
-- [x] Locales Tree
-- [x] Translating progress
-- [x] Workspace support
-- [x] YAML support
-- [x] `$tc`, `$d`, `$n`, `v-t` support
-- [x] Hide/Show specific locales
-- [x] Language flags
-- [x] Goto definition
-- [x] Source language indicator
-- [x] i18n for the plugin itself
-- [x] Annoation config (on/off, maxlength)
-- [x] Option to force enabling on non-vue-i18n project
-- [x] Find all references
-- [x] Loading `.js` locales
-- [x] Loading `.ts` locales
-- [x] Analysis report
-- [x] JSON/YAML file annonation & hint
-- [x] [Single File Components i18n support](http://kazupon.github.io/vue-i18n/guide/sfc.html)
-
-## 👨‍💻 Thanks
-
-This extension is original forked from [think2011/vscode-vue-i18n](https://github.com/think2011/vscode-vue-i18n), it can't be existed without [@think2011](https://github.com/think2011)'s great work.
-
-And thanks for all [the awesome contributors](https://github.com/antfu/vue-i18n-ally/graphs/contributors).
+本插件最初Fork自 [think2011/vscode-vue-i18n](https://github.com/think2011/vscode-vue-i18n)，非常感谢 [@think2011](https://github.com/think2011) 的支持和启发。
 
 ## License
 

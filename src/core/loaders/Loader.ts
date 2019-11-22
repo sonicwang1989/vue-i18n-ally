@@ -12,7 +12,7 @@ export abstract class Loader extends Disposable {
   protected _flattenLocaleTree: FlattenLocaleTree = {}
   protected _localeTree: LocaleTree = new LocaleTree({ keypath: '' })
 
-  constructor (
+  constructor(
     public readonly name: string,
   ) {
     super(() => this.onDispose())
@@ -22,23 +22,23 @@ export abstract class Loader extends Disposable {
 
   abstract getShadowFilePath(keypath: string, locale: string): string | undefined
 
-  get root () {
+  get root() {
     return this._localeTree
   }
 
-  get flattenLocaleTree () {
+  get flattenLocaleTree() {
     return this._flattenLocaleTree
   }
 
-  get files (): FileInfo[] {
+  get files(): FileInfo[] {
     return []
   }
 
-  splitKeypath (keypath: string): string[] {
+  splitKeypath(keypath: string): string[] {
     return keypath.replace(/\[(.*?)\]/g, '.$1').split('.')
   }
 
-  getCoverage (locale: string, keys?: string[]): Coverage | undefined {
+  getCoverage(locale: string, keys?: string[]): Coverage | undefined {
     const totalKeys = keys || Object.keys(this.flattenLocaleTree)
     totalKeys.sort()
     const translatedKeys = totalKeys.filter(key => this.flattenLocaleTree[key] && this.flattenLocaleTree[key].getValue(locale))
@@ -59,7 +59,7 @@ export abstract class Loader extends Disposable {
     }
   }
 
-  protected updateTree (tree: LocaleTree | undefined, data: any, keypath: string, keyname: string, options: NodeOptions, isCollection = false) {
+  protected updateTree(tree: LocaleTree | undefined, data: any, keypath: string, keyname: string, options: NodeOptions, isCollection = false) {
     tree = tree || new LocaleTree({
       keypath,
       keyname,
@@ -81,7 +81,7 @@ export abstract class Loader extends Disposable {
 
       // should go nested
       if (_.isArray(value)) {
-        let subtree: LocaleTree|undefined
+        let subtree: LocaleTree | undefined
         if (node && node.type === 'tree')
           subtree = node as LocaleTree
 
@@ -90,7 +90,7 @@ export abstract class Loader extends Disposable {
       }
 
       if (_.isObject(value)) {
-        let subtree: LocaleTree|undefined
+        let subtree: LocaleTree | undefined
         if (node && node.type === 'tree')
           subtree = node as LocaleTree
 
@@ -128,7 +128,7 @@ export abstract class Loader extends Disposable {
     return tree
   }
 
-  getTreeNodeByKey (keypath: string, tree?: LocaleTree): LocaleNode | LocaleTree | undefined {
+  getTreeNodeByKey(keypath: string, tree?: LocaleTree): LocaleNode | LocaleTree | undefined {
     const root = !tree
     tree = tree || this.root
 
@@ -151,7 +151,7 @@ export abstract class Loader extends Disposable {
     return undefined
   }
 
-  getFilepathByKey (key: string, locale?: string) {
+  getFilepathByKey(key: string, locale?: string) {
     locale = locale || Config.displayLanguage
     const record = this.getRecordByKey(key, locale)
     if (record && record.filepath)
@@ -159,7 +159,7 @@ export abstract class Loader extends Disposable {
     return undefined
   }
 
-  getValueByKey (keypath: string, locale?: string, maxlength = 0, stringifySpace?: number) {
+  getValueByKey(keypath: string, locale?: string, maxlength = 0, stringifySpace?: number) {
     locale = locale || Config.displayLanguage
 
     const node = this.getTreeNodeByKey(keypath)
@@ -194,11 +194,32 @@ export abstract class Loader extends Disposable {
     }
   }
 
-  getShadowNodeByKey (keypath: string) {
+  /**
+   * 根据值获取路径
+   * @param value 
+   * @param locale 
+   */
+  getKeyByValue(value: string, locale?: string) {
+    // const tree: LocaleTree = this.root;
+    // const child=tree.children;
+
+    // // tree style
+    // const keys = this.splitKeypath(keypath)
+    // const head = keys[0]
+    // const remaining = keys.slice(1).join('.')
+    // const node = tree.getChild(head)
+    // if (remaining === '')
+    //   return node
+    // if (node && node.type === 'tree')
+    //   return this.getTreeNodeByKey(remaining, node)
+    // return undefined
+  }
+
+  getShadowNodeByKey(keypath: string) {
     return new LocaleNode({ keypath, shadow: true })
   }
 
-  getNodeByKey (keypath: string, shadow = false): LocaleNode | undefined {
+  getNodeByKey(keypath: string, shadow = false): LocaleNode | undefined {
     const node = this.getTreeNodeByKey(keypath)
     if (!node && shadow)
       return this.getShadowNodeByKey(keypath)
@@ -206,7 +227,7 @@ export abstract class Loader extends Disposable {
       return node
   }
 
-  getTranslationsByKey (keypath: string, shadow = true) {
+  getTranslationsByKey(keypath: string, shadow = true) {
     const node = this.getNodeByKey(keypath, shadow)
     if (!node)
       return {}
@@ -216,12 +237,12 @@ export abstract class Loader extends Disposable {
       return node.locales
   }
 
-  getRecordByKey (keypath: string, locale: string, shadow = false): LocaleRecord | undefined {
+  getRecordByKey(keypath: string, locale: string, shadow = false): LocaleRecord | undefined {
     const trans = this.getTranslationsByKey(keypath, shadow)
     return trans[locale]
   }
 
-  getShadowLocales (node: LocaleNode, listedLocales?: string[]) {
+  getShadowLocales(node: LocaleNode, listedLocales?: string[]) {
     const locales: Record<string, LocaleRecord> = {}
 
     listedLocales = listedLocales || Global.getVisibleLocales(this.locales)
@@ -249,13 +270,13 @@ export abstract class Loader extends Disposable {
     return locales
   }
 
-  abstract async write (pendings: PendingWrite | PendingWrite[]): Promise<void>
+  abstract async write(pendings: PendingWrite | PendingWrite[]): Promise<void>
 
-  canHandleWrites (pending: PendingWrite) {
+  canHandleWrites(pending: PendingWrite) {
     return false
   }
 
-  protected onDispose () {
+  protected onDispose() {
     Log.info(`🗑 Disposing loader "${this.name}"`)
     this._disposables.forEach(d => d.dispose())
     this._disposables = []

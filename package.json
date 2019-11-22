@@ -410,6 +410,7 @@
     ]
   },
   "scripts": {
+    "build": "vsce package",
     "release": "standard-version",
     "publish:minor": "standard-version --release-as minor && git push --follow-tags && vsce publish",
     "publish:patch": "standard-version --release-as patch && git push --follow-tags && vsce publish",
